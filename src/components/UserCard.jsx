@@ -2,17 +2,17 @@ import moment from "moment"
 
 const UserCard = ({ user, handleModal, details = false }) => {
     return (
-        <div key={user?.login?.uuid}
-            className={`user-card 
+        <div
+            className={`user-card
                 ${details
                     ? 'p-4'
-                    : 'flex items-center gap-3 mb-5 cursor-pointer hover:bg-gray-100 p-3 rounded-lg'
+                    : 'flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded-lg w-md'
                 }`}
             onClick={() => !details && handleModal(user)}
         >
             {!details ? (
                 <>
-                    <img className="rounded-full" src={user.picture.medium} alt={`${user.name.first} ${user.name.last}`} />
+                    <img className="rounded-full" src={user.picture.thumbnail} alt={`${user.name.first} ${user.name.last}`} />
                     <div className="user-info">
                         <p className="m-0 font-bold">{`${user.name.first} ${user.name.last}`}</p>
                         <p className="m-0 text-gray-500 text-sm">{user.email}</p>
