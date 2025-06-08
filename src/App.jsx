@@ -3,6 +3,7 @@ import { fetchUsers } from "./thunks/users"
 import Modal from "./components/Modal"
 import UserCard from "./components/UserCard"
 import Pagination from "./components/Pagination"
+import SearchInput from "./components/SearchInput"
 import './assets/styles/styles.scss'
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
   const [userDetails, setUserDetails] = useState({})
   const [itemsPerPage, setItemsPerPage] = useState(5)
   const [currentPage, setCurrentPage] = useState(1)
+  const [inputSearch, setInputSearch] = useState("")
 
   useEffect(() => {
     fetchUsers()
@@ -28,19 +30,39 @@ function App() {
   const endIndex = startIndex + itemsPerPage
   const currentItems = users.slice(startIndex, endIndex);
 
+  const filteredItems = currentItems.filter((user) => {
+    return (
+      user.name.first.toLowerCase().includes(inputSearch.toLowerCase())
+      || user.name.last.toLowerCase().includes(inputSearch.toLowerCase())
+      || user.email.toLowerCase().includes(inputSearch.toLowerCase())
+    )
+  })
+
   return (
     <div className="container mx-auto p-4">
-      <p className="my-5 text-xl font-bold">Random Users:</p>
-      <div className="users-list overflow-y-auto">
-        {currentItems?.map((user) => (
-          <UserCard
-            user={user}
-            handleModal={handleModal}
-            key={user?.login?.uuid}
+      <div className="flex justify-between items-center">
+        <p className="my-5 text-xl font-bold">Random Users:</p>
+        <div className="flex justify-between items-center mr-5 gap-5">
+          <SearchInput
+            inputSearch={inputSearch}
+            setInputSearch={setInputSearch}
           />
-        )
-        )}
+        </div>
       </div>
+
+      <div className="users-list overflow-y-auto">
+        {filteredItems?.length ?
+          filteredItems?.map((user) => (
+            <UserCard
+              user={user}
+              handleModal={handleModal}
+              key={user?.login?.uuid}
+            />
+          )) : (
+            <p className="text-center text-gray-500 my-5">No users found</p>
+          )}
+      </div>
+
       {!!showModal &&
         <Modal
           onClose={() => setShowModal(false)}
