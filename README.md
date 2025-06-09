@@ -1,12 +1,24 @@
-# React + Vite
+Steps: 
+- install the dependencies
+- run "npm run dev" to start the project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+Key moments:
+- Fetch random users using Random User API.
+- Display user details in a modal by clicking on the card
+- Added pagination and select input to choose how many items per page we want to display
+- Added filtering logic
+- Added sorting logic by name or email, both ASC or DESC.
+- Took into account total pages update when filtering and sorting items
+- Added Loader, fallback error page
+- used custom hook useBreakpoint to detect the type of device and detect the right className when needed
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Future improvements: 
+- some UI/UX adjustments
+- add tests
+
+
+# Deployment Link
+https://users-task-blue.vercel.app/
