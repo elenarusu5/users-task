@@ -6,7 +6,7 @@ const UserCard = ({ user, handleModal, details = false }) => {
             className={`user-card
                 ${details
                     ? 'p-4'
-                    : 'flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded-lg w-md'
+                    : 'flex items-center gap-3 cursor-pointer hover:bg-gray-100 p-2 rounded-lg lg:w-md'
                 }`}
             onClick={() => !details && handleModal(user)}
         >
@@ -30,7 +30,7 @@ const UserCard = ({ user, handleModal, details = false }) => {
                     <p className="mb-1"><strong>Phone:</strong> {user.phone}</p>
                     <p className="mb-1"><strong>Address:</strong>
                         {` ${user.location?.city}, ${user.location?.state}, ${user.location?.country}`} <br />
-                        <span className="ml-18">street {user.location.street.name}  {user.location.street.number}</span>
+                        <span>street {user.location.street.name}  {user.location.street.number}</span>
                     </p>
                     <p className="mb-1"><strong>Postcode:</strong> {user.location.postcode}</p>
                 </>

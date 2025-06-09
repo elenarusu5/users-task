@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react"
+import useBreakpoint from "./hooks/useBreakpoint"
 import { fetchUsers } from "./thunks/users"
 import Modal from "./components/Modal"
 import UserCard from "./components/UserCard"
 import Pagination from "./components/Pagination"
 import SearchInput from "./components/SearchInput"
+import Spinner from "./components/Spinner"
+import { MOBILE } from "./constants/constants"
 import './assets/styles/styles.scss'
 
 function App() {
+  const [loading, setLoading] = useState(false)
   const [users, setUsers] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [userDetails, setUserDetails] = useState({})
@@ -15,10 +19,16 @@ function App() {
   const [inputSearch, setInputSearch] = useState("")
   const [sort, setSort] = useState({ type: "", direction: "" })
 
+  const breakpoint = useBreakpoint()
+
+  const isMobile = breakpoint === MOBILE
+
   useEffect(() => {
+    setLoading(true)
     fetchUsers()
       .then((data) => {
-        setUsers(data?.results)
+        setUsers(data?.results || [])
+        setLoading(false)
       })
   }, [])
 
@@ -69,7 +79,7 @@ function App() {
   const currentItems = items.slice(startIndex, endIndex)
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 h-full">
       <div className="lg:flex lg:justify-between lg:items-center">
         <p className="lg:my-5 text-xl font-bold">Random Users:</p>
         <div className="lg:flex lg:justify-between lg:items-center lg:mr-5 lg:gap-5">
@@ -77,7 +87,7 @@ function App() {
             inputSearch={inputSearch}
             setInputSearch={setInputSearch}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 my-4 lg:my-0">
             <select
               name="type"
               className="bg-gray-200 text-gray-900 text-sm rounded-lg block w-40 p-3 mt-2"
@@ -103,21 +113,39 @@ function App() {
         </div>
       </div>
 
-      <div className="users-list overflow-y-auto">
-        {currentItems?.length ?
-          currentItems?.map((user) => (
-            <UserCard
-              user={user}
-              handleModal={handleModal}
-              key={user?.login?.uuid}
-            />
-          )) : (
-            <p className="text-center text-gray-500 my-5">No users found</p>
-          )}
-      </div>
+      {loading ? (
+        <Spinner />
+      ) : !currentItems?.length ? (
+        <p className="text-center text-gray-500 my-5">No users found</p>
+      ) : (
+        <>
+          <div className={`${isMobile ? 'mobile-users-list' : 'users-list'} overflow-y-auto`}>
+            {currentItems?.map((user) => (
+              <UserCard
+                user={user}
+                handleModal={handleModal}
+                key={user?.login?.uuid}
+              />
+            ))}
+          </div>
+          <Pagination
+            totalPages={Math.ceil(items.length / itemsPerPage)}
+            currentPage={currentPage}
+            itemsPerPage={itemsPerPage}
+            onItemsPerPageChange={(value) => {
+              setItemsPerPage(value)
+              if (currentPage > Math.ceil(items.length / value)) {
+                setCurrentPage(Math.ceil(items.length / value))
+              }
+            }}
+            onPageChange={(page) => {
+              setCurrentPage(page)
+            }}
+          />
+        </>
+      )}
 
-      {
-        !!showModal &&
+      {!!showModal &&
         <Modal
           onClose={() => setShowModal(false)}
         >
@@ -127,21 +155,6 @@ function App() {
           />
         </Modal>
       }
-
-      <Pagination
-        totalPages={Math.ceil(items.length / itemsPerPage)}
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-        onItemsPerPageChange={(value) => {
-          setItemsPerPage(value)
-          if (currentPage > Math.ceil(items.length / value)) {
-            setCurrentPage(Math.ceil(items.length / value))
-          }
-        }}
-        onPageChange={(page) => {
-          setCurrentPage(page)
-        }}
-      />
     </div >
   )
 }

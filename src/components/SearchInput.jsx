@@ -3,14 +3,14 @@ const SearchInput = ({ inputSearch, setInputSearch }) => {
     return (
         <div className="pt-2 relative mx-auto text-gray-600">
             <input
-                className="border-2 border-gray-300 bg-white h-10 w-60 px-5 pr-10 rounded-lg text-sm focus:outline-none"
+                className="border-2 border-gray-300 bg-white h-10 w-82 lg:w-60 px-4 pr-10 rounded-lg text-sm focus:outline-none"
                 type="search"
                 name="search"
                 placeholder="Search by name or email"
                 value={inputSearch}
                 onChange={(e)=> setInputSearch(e.target.value)}
             />
-            <button type="submit" className="absolute right-4 top-0 mt-5">
+            <button type="submit" className="absolute right-10 lg:right-4 top-0 mt-5">
                 <svg className="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                     xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
                     viewBox="0 0 56.966 56.966"

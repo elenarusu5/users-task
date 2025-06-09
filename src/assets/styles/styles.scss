@@ -1,5 +1,11 @@
+.loading-container,
 .users-list {
     height: calc(100vh - 160px);
+}
+
+.mobile-users-list {
+    height: calc(100vh - 270px);
+    margin-bottom: 40px;
 }
 
 /* width */
